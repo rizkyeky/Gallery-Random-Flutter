@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io' show InternetAddress, SocketException;
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
@@ -21,8 +20,6 @@ class Api {
       print('not connected');
     }
   }
-
-  StreamController<ImageGallery> imageController = StreamController<ImageGallery>();
   
   String url = "https://picsum.photos";
 
@@ -49,21 +46,11 @@ class Api {
         "url": url
       }),
     ];
-
-    // final images = <ImageGallery>[];
-    // final parsed = json.decode(response.body) as List<dynamic>;
-
-    // for (final img in parsed) {
-    //   images.add(ImageGallery.fromJson(img as Map<String, dynamic>));
-    // }
-
     return images;
   }
 
   Future<Uint8List> getImageGallery(int id, int width, int height) async {
-    // print("get image from url");
     final response = await client.get("$url/id/$id/$width/$height");
-    // print("get image from url success");
     return response.bodyBytes;
   }
 }
