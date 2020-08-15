@@ -6,8 +6,7 @@ import '../model/Image.dart';
 
 class Api {
   String url = "https://picsum.photos";
-  final _apiKey = "";
-  final _host = 'api.unsplash.com';
+  final _host = "api.unsplash.com";
 
   Map<String, String> _header = {
     "Authorization": "Client-ID " + "1DZ0aLedKkebo2tH8RJ2I0psQ2qfmclGZ9YLq7eixDI",
@@ -16,32 +15,20 @@ class Api {
 
   http.Client client = http.Client();
 
-  Future<List<ImageGallery>> fetchImagesGallery(int limit) async {
-    // final response = await client.get("$url/v2/list?limit=$limit");
+  Future<void> testGET() async {
+    final uri = Uri.https(_host, "photos");
+    final response = await client.get(uri, headers: _header);
     
-    await Future.delayed(const Duration(seconds: 2));
-
-    final List<ImageGallery> images = [
-      ImageGallery.fromJson({
-        "id": "1",
-        "author": "Eky",
-        "width": 200,
-        "height": 200,
-        "url": url
-      }),
-      ImageGallery.fromJson({
-        "id": "2",
-        "author": "Sese",
-        "width": 200,
-        "height": 200,
-        "url": url
-      }),
-    ];
-    return images;
+    print(response.body);
   }
 
   Future<Uint8List> getImageGallery(int id, int width, int height) async {
+    // final uri = Uri.https(_host, "photos");
     final response = await client.get("$url/id/$id/$width/$height");
+    // final response = await client.get(uri, headers: _header);
+    
+    // print(response.body);
+    
     return response.bodyBytes;
   }
 }
