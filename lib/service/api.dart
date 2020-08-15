@@ -5,23 +5,14 @@ import 'package:http/http.dart' as http;
 import '../model/Image.dart';
 
 class Api {
-  Api() {
-    print("run API");
-    checkConnection();    
-  }
-
-  Future<void> checkConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
-      }
-    } on SocketException catch (_) {
-      print('not connected');
-    }
-  }
-  
   String url = "https://picsum.photos";
+  final _apiKey = "";
+  final _host = 'api.unsplash.com';
+
+  Map<String, String> _header = {
+    "Authorization": "Client-ID " + "1DZ0aLedKkebo2tH8RJ2I0psQ2qfmclGZ9YLq7eixDI",
+    "Accept-Version": "v1"
+  };
 
   http.Client client = http.Client();
 
