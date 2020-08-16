@@ -30,8 +30,9 @@ dependencies:
   provider: ^4.3.1
   get_it: ^4.0.4
   rxdart: ^0.24.1
-  dio: ^3.0.10
   carousel_slider: ^2.2.1
+  http: ^0.12.2
+  # dio: ^3.0.10
 
 dev_dependencies:
   flutter_test:

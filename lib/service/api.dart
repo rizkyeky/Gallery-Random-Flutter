@@ -1,11 +1,9 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:convert' show json;
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 import '../model/Image.dart';
 
 class Api {
-  String url = "https://picsum.photos";
   final _host = "api.unsplash.com";
 
   Map<String, String> _header = {
@@ -13,30 +11,33 @@ class Api {
     "Accept-Version": "v1"
   };
 
-  http.Client client = http.Client();
+  Client _client = Client();
 
-  Future<void> testGET() async {
+  Future<List<ImageGallery>> imageGETs() async {
     final uri = Uri.https(_host, "photos");
-    final response = await client.get(uri, headers: _header);
+    final response = await _client.get(uri, headers: _header);
     
     print(uri.toString());
-    // print(response.body);
 
-    List data = json.decode(response.body);
-    ImageGallery image = ImageGallery.fromJson(data[0] as Map);
-    
-    print(data.length);
-    print(image.toString());
-    print(image.urls);
+    var data = json.decode(response.body);
+    List<ImageGallery> images = [];
+
+    for (var map in data) {
+      images.add(ImageGallery.fromJson(map as Map<String, dynamic>)); 
+    }
+
+    // images.forEach((element) {print(element.toString());});
+
+    return images;
   }
 
   Future<Uint8List> getImageGallery(int id, int width, int height) async {
     // final uri = Uri.https(_host, "photos");
-    final response = await client.get("$url/id/$id/$width/$height");
-    // final response = await client.get(uri, headers: _header);
+    // final response = await _client.get("$url/id/$id/$width/$height");
+    // final response = await _client.get(uri, headers: _header);
     
     // print(response.body);
     
-    return response.bodyBytes;
+    // return response.bodyBytes;
   }
 }

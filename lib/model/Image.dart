@@ -1,9 +1,10 @@
 class ImageGallery {
-  int id;
-  double width;
-  double height;
+  String id;
+  int width;
+  int height;
   String altDescription;
   int likes;
+
   Map<String, String> urls = {
     "full" : "",
     "thumb": "",
@@ -18,7 +19,7 @@ class ImageGallery {
   String toString() => "image:$id";
 
   ImageGallery.initial() {
-    id = 0;
+    id = "";
     author = <String, String>{};
     width = 0;
     height = 0;
@@ -28,20 +29,21 @@ class ImageGallery {
   }
 
   ImageGallery.fromJson(Map<String, dynamic> json) {
-    id = int.parse(json["id"].toString());
+    id = json["id"];
+    width = json["width"];
+    height = json["height"];
+    altDescription = json["alt_description"];
+    likes = json["likes"];
+    
+    urls = <String, String>{
+      "full": json["urls"]["full"],
+      "thumb": json["urls"]["thumb"],
+      "html": json["links"]["html"],
+    };
     author = <String, String>{
       "id": json["user"]["id"],
       "name": json["user"]["name"]
     };
-    width = double.parse(json["width"].toString());
-    height = double.parse(json["height"].toString());
-    urls = <String, String>{
-      "full": json["urls"]["full"].toString(),
-      "thumb": json["urls"]["thumb"].toString(),
-      "html": json["urls"]["html"].toString()
-    };
-    altDescription = json["alt_description"].toString();
-    likes = int.parse(json["likes"]);
   }
 
   Map<String, dynamic> toJson(ImageGallery image) => {
