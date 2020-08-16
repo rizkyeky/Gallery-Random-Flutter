@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:gallery/model/Image.dart';
 
 import '../../controller/Controller.dart';
 
@@ -52,7 +53,7 @@ class XContentBar extends StatelessWidget {
 class XGridList extends StatelessWidget {
 
   // final Stream<List<Uint8List>> blocStream;
-  final Stream<Uint8List> Function(int) streamImage; 
+  final Stream<Map<String, dynamic>> Function() streamImage;
   
   XGridList(this.streamImage, {Key key}) : super(key: key);
 
@@ -62,18 +63,22 @@ class XGridList extends StatelessWidget {
       verCount: 1, 
       horiCount: 2,
       padding: EdgeInsets.only(left: 6, right: 6, top: 0, bottom: 12),
-      builder: (context, index) => StreamBuilder<Uint8List>(
-        stream: streamImage(1),
+      builder: (context, index) => StreamBuilder<Map<String, dynamic>>(
+        stream: streamImage(),
         builder: (context, snapshot) => (snapshot.hasData) 
         ? XCard(
           child: Column(
             children: <Widget>[
               Ink.image(
                 fit: BoxFit.cover,
-                image: MemoryImage(snapshot.data),
+                image: MemoryImage(snapshot.data["bytes"]),
                 child: Container(height: 120,),
               ),
-              ListTile(dense: true, title: Text("Image ${index+1}"), subtitle: Text("http://"),)
+              ListTile( 
+                title: Text(snapshot.data["authorName"]), 
+                subtitle: Text(snapshot.data["link"], overflow: TextOverflow.ellipsis,),
+                trailing: Text(snapshot.data["likes"].toString()),
+              )
             ],
           ),
         )

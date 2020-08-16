@@ -39,7 +39,10 @@ class HomeView extends View<HomeController> {
               ),
             ),
             ListTile(title: Text("Gallery", style: Theme.of(context).textTheme.headline6)),
-            XGridList(bloc.getImages),
+            
+            for (int i = 0; i < bloc.gridlLen/2; i++)
+              XGridList(bloc.getRandImage),
+            
             // XGridList(bloc.getImages),
             // XGridList(bloc.getImages),
             // XGridList(bloc.gridStream),
