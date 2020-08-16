@@ -15,5 +15,9 @@ void setupLocator() {
 }
 
 // Future<void> setupDB() async {
-//   await locator<HomeController>().fetchImages(10);
+//   print("setup DB");
+
+//   HomeController homeBloc = locator<HomeController>();
+  
+//   await homeBloc.fetchImages();
 // }
