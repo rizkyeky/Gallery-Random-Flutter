@@ -1,5 +1,5 @@
 import 'dart:convert' show json;
-import 'dart:typed_data';
+import 'dart:typed_data' show Uint8List;
 import 'package:http/http.dart' show Client;
 import '../model/Image.dart';
 
@@ -13,11 +13,14 @@ class Api {
 
   Client _client = Client();
 
-  Future<List<ImageGallery>> imageGETs() async {
-    final uri = Uri.https(_host, "photos");
+  Future<List<ImageGallery>> getImages({int page = 1, int perPage = 10}) async {
+    final uri = Uri.https(_host, "photos", {
+      "page": page.toString(),
+      "per_page": perPage.toString()
+    });
     final response = await _client.get(uri, headers: _header);
     
-    print(uri.toString());
+    // print(uri.toString());
 
     var data = json.decode(response.body);
     List<ImageGallery> images = [];
@@ -31,13 +34,8 @@ class Api {
     return images;
   }
 
-  Future<Uint8List> getImageGallery(int id, int width, int height) async {
-    // final uri = Uri.https(_host, "photos");
-    // final response = await _client.get("$url/id/$id/$width/$height");
-    // final response = await _client.get(uri, headers: _header);
-    
-    // print(response.body);
-    
-    // return response.bodyBytes;
+  Future<Uint8List> getImageBytes(String url) async {
+    final response = await _client.get(url, headers: _header);
+    return response.bodyBytes;
   }
 }
