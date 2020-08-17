@@ -1,54 +1,7 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:gallery/model/Image.dart';
 
-import '../../controller/Controller.dart';
-
-import 'CardImage.dart';
 import 'XCard.dart';
 import 'XGrid.dart';
-
-class XContentBar extends StatelessWidget {
-  
-  final List<Uint8List> images;
-  
-  const XContentBar({
-    Key key,
-    this.images,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12),
-      color: Theme.of(context).cardColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            height: 40,
-            margin: const EdgeInsets.only(left: 12),
-            alignment: Alignment.centerLeft,
-            child: Text("Animals", style: Theme.of(context).textTheme.headline6,),
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            height: 200,
-            alignment: Alignment.center,
-            child:ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: images.length,
-              itemBuilder: (context, index) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: CardImage()
-              )
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
 
 class XGridList extends StatelessWidget {
 
@@ -60,7 +13,7 @@ class XGridList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return XGrid(
-      verCount: 1, 
+      verCount: 2, 
       horiCount: 2,
       padding: EdgeInsets.only(left: 6, right: 6, top: 0, bottom: 12),
       builder: (context, index) => StreamBuilder<Map<String, dynamic>>(
@@ -87,6 +40,35 @@ class XGridList extends StatelessWidget {
           alignment: Alignment.center,
           child: const CircularProgressIndicator(),
         ),
+      ),
+    );
+  }
+}
+
+class XCardImage extends StatelessWidget {
+  
+  final Stream<Map<String, dynamic>> Function() streamImage;
+  
+  const XCardImage(this.streamImage, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: StreamBuilder<Map<String, dynamic>>(
+        stream: streamImage(),
+        builder: (context, snapshot) => 
+        XCard(
+          radiusBorder: 6,
+          height: 200,
+          padding: EdgeInsets.all(12),
+          backgroundImage: (snapshot.hasData) ? MemoryImage(snapshot.data["bytes"]) : null,
+          child: (!snapshot.hasData) ? Container(
+            alignment: Alignment.center,
+            height: 200,
+            color: Colors.white,
+            child: CircularProgressIndicator(),
+          ) : null,
+        )
       ),
     );
   }
