@@ -69,15 +69,15 @@ class XGridList extends StatelessWidget {
         ? XCard(
           child: Column(
             children: <Widget>[
-              Ink.image(
+             Ink.image(
                 fit: BoxFit.cover,
                 image: MemoryImage(snapshot.data["bytes"]),
                 child: Container(height: 120,),
               ),
-              ListTile( 
-                title: Text(snapshot.data["authorName"]), 
-                subtitle: Text(snapshot.data["link"], overflow: TextOverflow.ellipsis,),
-                trailing: Text(snapshot.data["likes"].toString()),
+              ListTile(
+                title: Text(snapshot.data["authorName"]),
+                subtitle: Text("${snapshot.data["likes"].toString()} likes"), 
+                trailing: IconButton(icon: Icon(Icons.favorite), onPressed: () {},),
               )
             ],
           ),
