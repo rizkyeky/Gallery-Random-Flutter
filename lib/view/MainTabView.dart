@@ -75,11 +75,12 @@ class XBottomNavigator extends StatelessWidget {
             IconButton(
               icon: StreamBuilder<SwitchTab>(
                 stream: bloc.tabStream,
-                builder: (context, stream) {
-                  if (stream.data == SwitchTab.home)
-                  return const Icon(Icons.home, color: Colors.white);
-                  else return const Icon(Icons.home);
-                }
+                builder: (context, stream) => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 800),
+                  child: (stream.data == SwitchTab.home) 
+                    ? Icon( Icons.home, key: Key("active"), color: Colors.white,)
+                    : Icon(Icons.home, key: Key("notactive")),
+                )
               ), 
               onPressed: () {
                 bloc.setTab(SwitchTab.home);
@@ -88,11 +89,12 @@ class XBottomNavigator extends StatelessWidget {
             IconButton(
               icon:StreamBuilder<SwitchTab>(
                 stream: bloc.tabStream,
-                builder: (context, stream) {
-                  if (stream.data == SwitchTab.search)
-                  return const Icon(Icons.search, color: Colors.white);
-                  else return const Icon(Icons.search);
-                }
+                builder: (context, stream) => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 800),
+                  child: (stream.data == SwitchTab.search) 
+                    ? Icon( Icons.search, key: Key("active"), color: Colors.white,)
+                    : Icon(Icons.search, key: Key("notactive")),
+                )
               ), 
               onPressed: () {
                 bloc.setTab(SwitchTab.search);
@@ -101,11 +103,12 @@ class XBottomNavigator extends StatelessWidget {
             IconButton(
               icon:StreamBuilder<SwitchTab>(
                 stream: bloc.tabStream,
-                builder: (context, stream) {
-                  if (stream.data == SwitchTab.cart)
-                  return const Icon(Icons.shopping_cart, color: Colors.white);
-                  else return const Icon(Icons.shopping_cart);
-                }
+                builder: (context, stream) => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 800),
+                  child: (stream.data == SwitchTab.cart) 
+                    ? Icon( Icons.shopping_cart, key: Key("active"), color: Colors.white,)
+                    : Icon(Icons.shopping_cart, key: Key("notactive")),
+                )
               ),  
               onPressed: () {
                 bloc.setTab(SwitchTab.cart);
@@ -114,11 +117,12 @@ class XBottomNavigator extends StatelessWidget {
             IconButton(
               icon:StreamBuilder<SwitchTab>(
                 stream: bloc.tabStream,
-                builder: (context, stream) {
-                  if (stream.data == SwitchTab.profile)
-                  return const Icon(Icons.account_circle, color: Colors.white);
-                  else return const Icon(Icons.account_circle);
-                }
+                builder: (context, stream) => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 800),
+                  child: (stream.data == SwitchTab.profile) 
+                    ? Icon( Icons.account_circle, key: Key("active"), color: Colors.white,)
+                    : Icon(Icons.account_circle, key: Key("notactive")),
+                )
               ), 
               onPressed: () {
                 bloc.setTab(SwitchTab.profile);
