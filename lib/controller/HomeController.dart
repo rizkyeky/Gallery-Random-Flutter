@@ -27,13 +27,15 @@ class HomeController extends Controller {
   
   final _carouselImages = <Uint8List>[];
   
-  List<int> _randIndexGrid = [];
   List<int> _randIndexCarousel = [];
+  List<int> _randIndexGrid = [];
+  List<int> _temp = [];
  
   @override
   void init() {
-    _randIndexGrid = [4,5,6,7];
     _randIndexCarousel = [1,2,3];
+    _randIndexGrid = [4,5,6,7,8];
+    _temp = [];
 
     if (_carouselController.isClosed)
       _carouselController.onListen;
@@ -79,8 +81,22 @@ class HomeController extends Controller {
     await fetchImages();
     // print(_imagesList);
 
-    int indexRand  = _randIndexGrid[random.nextInt(_randIndexGrid.length)];
-    _randIndexGrid.remove(indexRand);
+    int indexRand;
+    int i = _randIndexGrid[random.nextInt(_randIndexGrid.length)];
+    
+    bool loop = true;
+    while (loop) {  
+      if (!_temp.contains(i)) {
+        _temp.add(i);
+        indexRand = i;
+        loop = false;
+      }
+      else {
+        i = _randIndexGrid[random.nextInt(_randIndexGrid.length)];
+      }
+    }
+
+    print(indexRand);
     
     final image = await _api.getImageBytes(_imagesList[indexRand].urls["thumb"]);
 
