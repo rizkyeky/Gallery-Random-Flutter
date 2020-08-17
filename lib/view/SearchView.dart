@@ -53,21 +53,10 @@ class SearchView extends View<SearchBloc> {
         child: StreamBuilder<bool>(
           initialData: false,
           stream: bloc.searchStream,
-          builder: (context, snapshot) =>
-          AnimatedCrossFade(
-            firstCurve: Curves.easeIn,
-            secondCurve: Curves.easeOut,
-            firstChild: const Icon(Icons.search),
-            secondChild: const Icon(Icons.close),
-            duration: Duration(milliseconds: 360),
-            crossFadeState: snapshot.data ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          builder: (context, snapshot) => AnimatedSwitcher(
+            duration: Duration(milliseconds: 800),
+            child: (snapshot.data) ? Icon(Icons.close) : Icon(Icons.search),
           )
-          // : AnimatedOpacity(
-          //   opacity: snapshot.data ? 0 : 1,
-          //   duration: Duration(milliseconds: 500),
-          //   child: const Icon(Icons.search),
-          // )
-
         ),
       ),
     );
