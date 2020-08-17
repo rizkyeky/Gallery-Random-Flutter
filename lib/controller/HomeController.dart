@@ -1,12 +1,10 @@
-// import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:gallery/model/Image.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../locator.dart';
-// import '../model/Image.dart';
+import '../model/Image.dart';
 import '../service/api.dart';
 
 import 'Controller.dart';
@@ -19,10 +17,7 @@ class HomeController extends Controller {
   final BehaviorSubject<List<Uint8List>> _carouselController = BehaviorSubject();
   Stream<List<Uint8List>> get carouselStream => _carouselController.stream;
 
-  // final BehaviorSubject<List<Uint8List>> _gridController = BehaviorSubject();
-  // Stream<List<Uint8List>> get gridStream => _gridController.stream;
-
-  static const _carouselLen = 4;
+  static const _carouselLen = 3;
   int get carouselLen => _carouselLen;
   static const _gridLen = 4;
   int get gridlLen => _gridLen;
@@ -31,26 +26,31 @@ class HomeController extends Controller {
   List<ImageGallery> get imagesList => _imagesList;
   
   final _carouselImages = <Uint8List>[];
-  // final _gridImages = <Uint8List>[];
   
-  List<int> _randIndex = [];
+  List<int> _randIndexGrid = [];
+  List<int> _randIndexCarousel = [];
  
   @override
   void init() {
+    _randIndexGrid = [4,5,6,7];
+    _randIndexCarousel = [1,2,3];
+
+    if (_carouselController.isClosed)
+      _carouselController.onListen;
+
     _getCarouselImages(_carouselLen);
-    // _getGridImages(_gridLen);
   }
 
   @override
   void dispose() {
     _carouselController.close();
-    // _gridController.close();
   }
 
 
   Future<void> fetchImages() async {
-    if (_imagesList.isEmpty)
+    if (_imagesList.isEmpty) {
       _imagesList = await _api.getImages();
+    }
   }
 
   Future<void> _getCarouselImages(int limit) async {
@@ -59,42 +59,29 @@ class HomeController extends Controller {
     // print(_imagesList);
 
     try {
-      for (int i = 0; i < limit; i++) {
-        final bytes = await _api.getImageBytes(_imagesList[i].urls["thumb"]);
+      for (int index in _randIndexCarousel) {
+        // print(index);
+        final bytes = await _api.getImageBytes(_imagesList[index].urls["thumb"]);
+        
         _carouselImages.add(bytes);
       }
-      _carouselController.sink.add(_carouselImages);
+      
+      if (!_carouselController.isClosed)
+        _carouselController.sink.add(_carouselImages);
 
     } catch (e) {
-      print("Assert Error in _getCarouselImages");
+      print("Assert Error in _getCarouselImages ($e)");
     }
-
   }
-
-  // Future<void> _getGridImages(int limit) async {
-
-  //   await fetchImages();
-
-  //   try {
-  //     for (int i = 0; i < limit; i++) {
-  //       final bytes = await _api.getImageBytes(_imagesList[i].urls["thumb"]);
-  //       _carouselImages.add(bytes);
-  //     }
-  //     _gridController.sink.add(_gridImages);
-      
-  //   } catch (e) {
-  //     print("Assert Error in _getGridImages");
-  //   }
-  // }
 
   Stream<Map<String, dynamic>> getRandImage() async* {
 
     await fetchImages();
     // print(_imagesList);
 
-    int indexRand = random.nextInt(_imagesList.length);
-
-
+    int indexRand  = _randIndexGrid[random.nextInt(_randIndexGrid.length)];
+    _randIndexGrid.remove(indexRand);
+    
     final image = await _api.getImageBytes(_imagesList[indexRand].urls["thumb"]);
 
     Map data = <String, dynamic>{
