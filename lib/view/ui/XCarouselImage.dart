@@ -1,14 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class CarouselImage extends StatelessWidget {
+class XCarouselImage extends StatelessWidget {
 
   final Widget Function(BuildContext context, int index) itemBuilder;
   final int itemCount;
   final bool autoPlay;
   final double height;
 
-  const CarouselImage({
+  const XCarouselImage({
     Key key,
     this.itemBuilder,
     this.itemCount,
