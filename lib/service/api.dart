@@ -2,12 +2,13 @@ import 'dart:convert' show json;
 import 'dart:typed_data' show Uint8List;
 import 'package:http/http.dart' show Client;
 import '../model/Image.dart';
+import 'token.dart';
 
 class Api {
   final _host = "api.unsplash.com";
 
   Map<String, String> _header = {
-    "Authorization": "Client-ID " + "1DZ0aLedKkebo2tH8RJ2I0psQ2qfmclGZ9YLq7eixDI",
+    "Authorization": "Client-ID " + token,
     "Accept-Version": "v1"
   };
 
